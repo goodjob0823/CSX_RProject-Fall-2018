@@ -1,4 +1,4 @@
-CSX_RProject_Fall-2018
+CSX_RProject_Fall_2018
 =============================
 
 107-1 Data Science Programming
