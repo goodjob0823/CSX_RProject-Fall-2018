@@ -66,19 +66,40 @@
 #   End in a draw!!!
 
 
+
 my_mat <- matrix(1:9, nrow = 3)
 my_mat
 print(paste("Round 0
             Now is player A's term!
             Player A input(1~9):"))
 
-turn_A <- i
-turn_B <- j
+turn_A1 <- i
+turn_B1 <- j
 nums <- sample(1:9)
-for (i in nums)
-    if
+  if (i <- nums){
+    return(i)
+    print('matrix(1:9')
+  } else {
+    print(paste("Invalid input! Please re-enter!
+                 Round 0
+                 Now is player A's term!
+                 Player A input(1~9):"))
+  }
+round <- round+1
 
-    for (j in nums)
+print(paste("Round 1
+            Now is player B's term!
+            Player B input(1~9):"))
+
+
+turn_A2 <- i+1
+turn_B2 <- j+1
+if (i+1 == i){
+    print(paste("This position is already occupied!
+                 Round 1
+                 Now is player B's term!
+                 Player B input(1~9):"))
+}
 
 
 
