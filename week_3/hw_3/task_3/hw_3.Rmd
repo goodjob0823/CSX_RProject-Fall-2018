@@ -1,4 +1,6 @@
 ---
+`Sys.Date()`
+`Sys.time()`
 title: "hw3_avocado"
 author: "Ching-Yung Chang"
 date: "10/3/2018"
