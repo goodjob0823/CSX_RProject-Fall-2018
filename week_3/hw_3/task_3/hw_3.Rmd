@@ -21,7 +21,6 @@ library(ggplot2)
 library(hexbin)
 library(dplyr)
 my_data <- read.csv("~/Documents/GitHub/CSX_RProject_Fall_2018/week_3/hw_3/task_3/avocado.csv", header=T, sep=",")
-my_data
 ```
 
 利用ggplot2，繪製以銷量為x軸、平均價格為y軸的點圖。此外，透過class、str等函數，將10,000多筆觀測值的表格整理出個變數的平均數、四分位數等
@@ -29,9 +28,9 @@ my_data
 ```{r pressure, echo=FALSE}
 ggplot(data = my_data, mapping = aes(x = Total.Volume, y = AveragePrice)) + geom_point(alpha = 0.1, color = "brown")
 head(my_data, 20)
-class(my_data)
-str(my_data)
-summary(my_data)
+#class(my_data)
+#str(my_data)
+#summary(my_data)
 colume_name <- colnames(my_data)
 colume_name
 ```
@@ -51,32 +50,32 @@ ggplot(data = my_data, mapping = aes(x = year, y = AveragePrice/338))+geom_bar(s
 
 ```{r}
 my_data_organic <- my_data[grep("organic", my_data$type), ]
-grep("organic", my_data$type)
-View(my_data_organic)
+#grep("organic", my_data$type)
+#View(my_data_organic)
 ```
 
 利用grep函數，找出region分別為"Atlanta"、"Boston"、"California"、"Chicago"、"Houston"的數據
 
 ```{r}
 my_data_Atlanta <- my_data[grep("Atlanta", my_data$region), ]
-grep("Atlanta", my_data$region)
-View(my_data_Atlanta)
+#grep("Atlanta", my_data$region)
+#View(my_data_Atlanta)
 
 my_data_Boston <- my_data[grep("Boston", my_data$region), ]
-grep("Boston", my_data$region)
-View(my_data_Boston)
+#grep("Boston", my_data$region)
+#View(my_data_Boston)
 
 my_data_California <- my_data[grep("California", my_data$region), ]
-grep("California", my_data$region)
-View(my_data_California)
+#grep("California", my_data$region)
+#View(my_data_California)
 
 my_data_Chicago <- my_data[grep("Chicago", my_data$region), ]
-grep("Chicago", my_data$region)
-View(my_data_Chicago)
+#grep("Chicago", my_data$region)
+#View(my_data_Chicago)
 
 my_data_Houston <- my_data[grep("Houston", my_data$region), ]
-grep("Houston", my_data$region)
-View(my_data_Houston)
+#grep("Houston", my_data$region)
+#View(my_data_Houston)
 ```
 
 利用bind_rows函數，將五個各別獨立出來的資料合併，形成一個region只有五座城市的表格，比原本region有五十多個 城市的表格更好分析
