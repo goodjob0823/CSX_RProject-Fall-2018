@@ -52,21 +52,29 @@ View(my_data_organic)
 
 
 ```{r}
+my_data_Atlanta <- my_data[grep("Atlanta", my_data$region), ]
+grep("Atlanta", my_data$region)
+View(my_data_Atlanta)
 
+my_data_Boston <- my_data[grep("Boston", my_data$region), ]
+grep("Boston", my_data$region)
+View(my_data_Boston)
+
+my_data_California <- my_data[grep("California", my_data$region), ]
+grep("California", my_data$region)
+View(my_data_California)
+
+my_data_Chicago <- my_data[grep("Chicago", my_data$region), ]
+grep("Chicago", my_data$region)
+View(my_data_Chicago)
+
+my_data_Houston <- my_data[grep("Houston", my_data$region), ]
+grep("Houston", my_data$region)
+View(my_data_Houston)
 ```
 
 
 ```{r}
-
+my_data_composite <- bind_rows(my_data_Atlanta, my_data_Boston, my_data_California, my_data_Chicago, my_data_Houston)
+ggplot(data = my_data_composite, mapping = aes(x = region, y = AveragePrice/338)) + geom_bar(stat = "identity", color = "grey")
 ```
-
-
-```{r}
-
-```
-
-
-```{r}
-
-```
-
