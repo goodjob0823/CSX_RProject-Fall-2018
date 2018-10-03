@@ -1,5 +1,7 @@
 ### week_3
 
+    [作業連結](https://goodjob0823.github.io/CSX_RProject_Fall_2018/week_3/hw_3/task_3/hw_3.html)
+
 In class
 
 1. Learned R data visualization
