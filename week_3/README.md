@@ -24,8 +24,6 @@ At home
       [ggplot2官方網站 tutorial with examples（推薦](https://plot.ly/ggplot2/getting-started/)
 
    (2) plotly
-   
-      [用基本的function畫圖](hhttps://rpubs.com/skydome20/R-Note4-Plotting_System)
       
       [R Plot Function](https://www.datamentor.io/r-programming/plot-function/)
       
