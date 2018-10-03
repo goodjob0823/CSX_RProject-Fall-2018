@@ -1,7 +1,5 @@
 ### week_3
 
-    [作業連結](https://goodjob0823.github.io/CSX_RProject_Fall_2018/week_3/hw_3/task_3/hw_3.html)
-
 In class
 
 1. Learned R data visualization
@@ -30,3 +28,4 @@ At home
       [R Plot Function](https://www.datamentor.io/r-programming/plot-function/)
       
 2. Finished hw_3 by doing data visualization on the dataset of U.S. avocado.
+    [hw_3.html](https://goodjob0823.github.io/CSX_RProject_Fall_2018/week_3/hw_3/task_3/hw_3.html)
