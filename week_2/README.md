@@ -38,3 +38,7 @@ At home
      [R語言網絡爬蟲初學者指南（使用rvest包）](http://www.ituring.com.cn/article/465317)
      
 3. Tried to design the game (OOXX), but it didn't work. 
+
+
+    作業2
+    [hw_2.html](https://goodjob0823.github.io/CSX_RProject_Fall_2018/week_2/hw_2/hw_2_crawler/hw_2.html)
