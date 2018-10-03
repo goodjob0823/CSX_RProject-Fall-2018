@@ -1,4 +1,4 @@
-### week_2
+### week_3
 
 In class
 
@@ -9,7 +9,7 @@ In class
   
 At home
 
-1. Learn some R data visualization by viewing some tutorials.
+1. Learned R data visualization by viewing some tutorials.
   
    (1) 如何更快速的前處理資料？
    
