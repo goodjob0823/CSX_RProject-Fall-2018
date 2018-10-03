@@ -48,10 +48,30 @@ my_data_composite <- bind_rows(my_data_Atlanta, my_data_Boston, my_data_Californ
 ggplot(data = my_data_composite, mapping = aes(x = region, y = AveragePrice/338)) + geom_bar(stat = "identity", color = "grey")
 
 
+install.packages("devtools")
+library(devtools)
+install_github("kbroman/broman")
+library(ggmap)
+library(mapproj)
+register_google(key = "AIzaSyBBeUPDxrLXly4GA0FoSucx0b6fhl4byHI", day_limit = 365)
+ggmap_credentials()
+map <- get_map(location = 'Los Angeles', zoom = 14)
+
+
 library(ggmap)
 library(mapproj)
 register_google <- function(key = "AIzaSyBBeUPDxrLXly4GA0FoSucx0b6fhl4byHI", day_limit = 1000)
 register_google
+
+map <- get_map(location = 'Los Angeles', zoom = 14)
+
+
+library(ggmap)
+register_google(key = "AIzaSyBBeUPDxrLXly4GA0FoSucx0b6fhl4byHI", account_type = "premium", day_limit = 100000)
+ggmap_credentials()
+
+
+
 
 
 
