@@ -2,38 +2,25 @@
 
 In class
 
-1. Learned R crawling
+1. Learned R data visualization
   
-2. Finished course_2 practice
-
-3. Turned GitHub to master branch, and made my own website.
+2. Finished course_3 practice
   
   
 At home
 
-1. Learn some R crawling skills by viewing some tutorials.
+1. Learn some R data visualization by viewing some tutorials.
   
-   (1)rvest: 簡單好用的爬蟲套件
-  
-      [rvest tutorial: scraping the web using R](https://stat4701.github.io/edav/2015/04/02/rvest_tutorial/)
-  
-      [使用 R 與 rvest 套件擷取網頁資料](https://blog.gtwang.org/r/rvest-web-scraping-with-r/)
-  
-      [超簡單爬蟲教學-使用R軟體的rvest套件抓網站資料(基礎篇)](http://brucehau.blogspot.com/2016/09/rrvest.html)
-  
-   (2)httr
-  
-      [R Crawler R爬蟲(httr package)](http://chihchengliang.github.io/DSC2015_Crawler/)
-  
-      [SNP Annotation 網路爬蟲](https://blog.gtwang.org/r/r-httr-package-snp-annotation-examples/)
-2. Finished hw_2 by crawling data on IMDB.
-
-   #參考資料
+   (1) 如何更快速的前處理資料？
+      [DataScienceRBook探索式資料分析](https://yijutseng.github.io/DataScienceRBook/eda.html)
+      [dplyr tutorial](http://genomicsclass.github.io/book/pages/dplyr_tutorial.html)
    
-     [R爬蟲略記 - rvest](http://kanchengzxdfgcv.blogspot.com/2018/01/r-rvest.html)
-     
-     [R學習：用rvest包爬取imdb網站電影信息](http://www.voidcn.com/article/p-kpkuzjga-bpb.html)
-     
-     [R語言網絡爬蟲初學者指南（使用rvest包）](http://www.ituring.com.cn/article/465317)
-     
-3. Tried to design the game (OOXX), but it didn't work. 
+   (2) 學習ggplot2的資源
+      [用資料說話，R語言有哪七種視覺化應用？](https://www.tipelse.com/article/686868.html)
+      [ggplot2官方網站 tutorial with examples（推薦](https://plot.ly/ggplot2/getting-started/)
+
+   (2) plotly
+      [用基本的function畫圖](hhttps://rpubs.com/skydome20/R-Note4-Plotting_System)
+      [R Plot Function](https://www.datamentor.io/r-programming/plot-function/)
+      
+2. Finished hw_3 by doing data visualization on the dataset of U.S. avocado.
