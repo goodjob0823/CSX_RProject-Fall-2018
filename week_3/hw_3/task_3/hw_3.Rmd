@@ -9,21 +9,26 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+資料視覺化：從Kaggle網站獲取美國酪梨的數據
 
+1. 使用ggplot2套件，將各個變數間的關係繪製成視覺化圖形
+2. 利用dplyr套件，將原本表格中的欄位進行分割及整合，才能繪出更好的圖形
+
+
+使用ggplot2、hexbin、dplyr套件
 
 ```{r}
 library(ggplot2)
 library(hexbin)
 library(dplyr)
-my_data <- read.csv("Downloads/avocado.csv", header=T, sep=",")
+my_data <- read.csv("avocado.csv", header=T, sep=",")
 my_data
 ```
 
-
+利用ggplot2，繪製以銷量為x軸、平均價格為y軸的點圖。此外，透過class、str等函數，將10,000多筆觀測值的表格整理出個變數的平均數、四分位數等
 
 ```{r pressure, echo=FALSE}
 ggplot(data = my_data, mapping = aes(x = Total.Volume, y = AveragePrice)) + geom_point(alpha = 0.1, color = "brown")
-my_data[my_data$type == 'conventional']
 head(my_data, 20)
 class(my_data)
 str(my_data)
@@ -32,17 +37,18 @@ colume_name <- colnames(my_data)
 colume_name
 ```
 
-
+利用ggplot2，繪製出各種類型的柱狀圖
 
 ```{r}
-ggplot(data = my_data, mapping = aes(x = type)) + geom_bar(color = "brown")
-ggplot(data = my_data, mapping = aes(x = Total.Bags, y = AveragePrice)) + geom_bar(stat = "identity", color = "brown")
+#以銷量(以每袋酪梨為單位)為x軸，平均價格為y軸
+ggplot(data = my_data, mapping = aes(x = Total.Bags, y = AveragePrice/338)) + geom_bar(stat = "identity", color = "brown") 
+#以年度為x軸，總銷量為y軸
 ggplot(data = my_data, mapping = aes(x = year, y = Total.Bags))+geom_bar(stat="identity",fill="steelblue")
+#以年度為x軸，平均價格為y軸
 ggplot(data = my_data, mapping = aes(x = year, y = AveragePrice/338))+geom_bar(stat="identity",fill="steelblue")
-
 ```
 
-
+利用grep函數，找出type為"organic"的數據
 
 ```{r}
 my_data_organic <- my_data[grep("organic", my_data$type), ]
@@ -50,6 +56,7 @@ grep("organic", my_data$type)
 View(my_data_organic)
 ```
 
+利用grep函數，找出region分別為"Atlanta"、"Boston"、"California"、"Chicago"、"Houston"的數據
 
 ```{r}
 my_data_Atlanta <- my_data[grep("Atlanta", my_data$region), ]
@@ -73,6 +80,8 @@ grep("Houston", my_data$region)
 View(my_data_Houston)
 ```
 
+利用bind_rows函數，將五個各別獨立出來的資料合併，形成一個region只有五座城市的表格，比原本region有五十多個
+城市的表格更好分析
 
 ```{r}
 my_data_composite <- bind_rows(my_data_Atlanta, my_data_Boston, my_data_California, my_data_Chicago, my_data_Houston)

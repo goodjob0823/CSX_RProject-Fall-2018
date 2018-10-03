@@ -25,7 +25,7 @@ my_data <- read.csv("Downloads/avocado.csv", header=T, sep=",")
 my_data
 ```
 
-利用ggplot2，繪製出以銷售量為x軸、平均價格為y軸的點圖。此外，透過class、str等函數，將10,000多筆觀測值的表格整理出個變數的平均數、四分位數等
+利用ggplot2，繪製以銷量為x軸、平均價格為y軸的點圖。此外，透過class、str等函數，將10,000多筆觀測值的表格整理出個變數的平均數、四分位數等
 
 ```{r pressure, echo=FALSE}
 ggplot(data = my_data, mapping = aes(x = Total.Volume, y = AveragePrice)) + geom_point(alpha = 0.1, color = "brown")
@@ -38,7 +38,7 @@ colume_name <- colnames(my_data)
 colume_name
 ```
 
-利用ggplot2，繪製出各種類型的柱狀圖。
+利用ggplot2，繪製出各種類型的柱狀圖
 
 ```{r}
 #以銷量(以每袋酪梨為單位)為x軸，平均價格為y軸
