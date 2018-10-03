@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(hexbin)
 library(dplyr)
-my_data <- read.csv("./Documents/GitHub/CSX_RProject_Fall_2018/week_3/hw_3/task_3/avocado.csv", header=T, sep=",")
+my_data <- read.csv("~/Documents/GitHub/CSX_RProject_Fall_2018/week_3/hw_3/task_3/avocado.csv", header=T, sep=",")
 my_data
 ```
 
@@ -28,7 +28,6 @@ my_data
 
 ```{r pressure, echo=FALSE}
 ggplot(data = my_data, mapping = aes(x = Total.Volume, y = AveragePrice)) + geom_point(alpha = 0.1, color = "brown")
-my_data[my_data$type == 'conventional']
 head(my_data, 20)
 class(my_data)
 str(my_data)
