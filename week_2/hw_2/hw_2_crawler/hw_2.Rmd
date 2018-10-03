@@ -17,7 +17,6 @@ knitr::opts_chunk$set(echo = TRUE)
 2. 使用rvest套件解析程式碼，並且搭資料框輸出簡易表格
 3. 儲存成.html以及R Markdown 版本
 
-
 使用rvest套件，並匯入網址
 
 ```{r}
@@ -82,7 +81,4 @@ time <- The_avengers %>%
     html_text()
 time
 ```
-
-
-
 
