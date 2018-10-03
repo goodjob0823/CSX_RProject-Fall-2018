@@ -14,14 +14,13 @@ knitr::opts_chunk$set(echo = TRUE)
 1. 使用ggplot2套件，將各個變數間的關係繪製成視覺化圖形
 2. 利用dplyr套件，將原本表格中的欄位進行分割及整合，才能繪出更好的圖形
 
-
 使用ggplot2、hexbin、dplyr套件
 
 ```{r}
 library(ggplot2)
 library(hexbin)
 library(dplyr)
-my_data <- read.csv("avocado.csv", header=T, sep=",")
+my_data <- read.csv("./Documents/GitHub/CSX_RProject_Fall_2018/week_3/hw_3/task_3/avocado.csv", header=T, sep=",")
 my_data
 ```
 
@@ -29,6 +28,7 @@ my_data
 
 ```{r pressure, echo=FALSE}
 ggplot(data = my_data, mapping = aes(x = Total.Volume, y = AveragePrice)) + geom_point(alpha = 0.1, color = "brown")
+my_data[my_data$type == 'conventional']
 head(my_data, 20)
 class(my_data)
 str(my_data)
@@ -80,8 +80,7 @@ grep("Houston", my_data$region)
 View(my_data_Houston)
 ```
 
-利用bind_rows函數，將五個各別獨立出來的資料合併，形成一個region只有五座城市的表格，比原本region有五十多個
-城市的表格更好分析
+利用bind_rows函數，將五個各別獨立出來的資料合併，形成一個region只有五座城市的表格，比原本region有五十多個 城市的表格更好分析
 
 ```{r}
 my_data_composite <- bind_rows(my_data_Atlanta, my_data_Boston, my_data_California, my_data_Chicago, my_data_Houston)
