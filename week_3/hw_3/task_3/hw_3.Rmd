@@ -38,12 +38,10 @@ colume_name
 利用ggplot2，繪製出各種類型的柱狀圖
 
 ```{r}
-#以銷量(以每袋酪梨為單位)為x軸，平均價格為y軸
-ggplot(data = my_data, mapping = aes(x = Total.Bags, y = AveragePrice/338)) + geom_bar(stat = "identity", color = "brown") 
 #以年度為x軸，總銷量為y軸
 ggplot(data = my_data, mapping = aes(x = year, y = Total.Bags))+geom_bar(stat="identity",fill="steelblue")
 #以年度為x軸，平均價格為y軸
-ggplot(data = my_data, mapping = aes(x = year, y = AveragePrice/338))+geom_bar(stat="identity",fill="steelblue")
+ggplot(data = my_data, mapping = aes(x = year, y = AveragePrice/4562))+geom_bar(stat="identity",fill="steelblue")
 ```
 
 利用grep函數，找出type為"organic"的數據

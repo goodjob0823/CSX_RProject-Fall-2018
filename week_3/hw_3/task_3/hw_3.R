@@ -14,9 +14,8 @@ colume_name <- colnames(my_data)
 colume_name
 
 
-ggplot(data = my_data, mapping = aes(x = Total.Bags, y = AveragePrice/338)) + geom_bar(stat = "identity", color = "brown")
 ggplot(data = my_data, mapping = aes(x = year, y = Total.Bags))+geom_bar(stat="identity",fill="steelblue")
-ggplot(data = my_data, mapping = aes(x = year, y = AveragePrice/338))+geom_bar(stat="identity",fill="steelblue")
+ggplot(data = my_data, mapping = aes(x = year, y = AveragePrice/4562))+geom_bar(stat="identity",fill="steelblue")
 
 
 my_data_organic <- my_data[grep("organic", my_data$type), ]
