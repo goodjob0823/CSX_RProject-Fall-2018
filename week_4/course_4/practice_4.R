@@ -72,8 +72,13 @@ wordcloud(docs,
 
 # 可以繼續做其他饒舌歌手！
 # 做完之後還要畫統計圖！
+# 程式碼一行一行(or一小段)慢慢讀取，才知道問題在哪裡！一次看到太多bug很亂
 
 
+
+# Warning message、Error差別？
+# 網友打的程式碼也不一定完全正確，自己要驗證過！
+# 有空記得把之前寫過的程式碼都再看過一遍，才會記得！
 
 
 
@@ -84,16 +89,22 @@ library(jiebaRD)
 library(jiebaR)
 library(RColorBrewer)
 library(wordcloud)
+library(dplyr)
 getwd()
 text <- readLines("Eminem songs.txt")
-txt <- tolower(txt)
+txt <- tolower('txt')
 txtList <- lapply(txt, strsplit," ")
 txtChar <- unlist(txtList)
-txtChar <- gsub("\\.|,|\\!|:|;|\\?","",txtChar) #clean symbol(.,!:;?)
+txtChar <- gsub("\\.|,|\\!|:|;|\\?","",txtChar)
 txtChar <- txtChar[txtChar!=""]
 data <- as.data.frame(table(txtChar))
 colnames(data) <- c("Word","freq")
 ordFreq <- data[order(data$freq,decreasing=T),]
+
+text_1 <- readLines("Top 100 common words.txt")
+Word <- select(text_1, 'Word')
+antiWord <- data.frame(Word,stringsAsFactors=F)
+result <- anti_join(ordFreq,antiWord,by="Word") %>% arrange(desc(freq))
 
 
 docs <- Corpus(VectorSource(text))
