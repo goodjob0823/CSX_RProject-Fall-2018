@@ -39,6 +39,3 @@ map <- addMarkers(map, lon, lat, popup=paste("單位：", df_place$單位,"<br>"
                                              "備註：", df_place$備註,"<br>"))
 map
 
-
-library(htmlwidgets)
-saveWidget(map, file="/Users/John/Documents/GitHub/CSX_RProject_Fall_2018/week_4/hw_4/electricity_charge.html")
