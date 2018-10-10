@@ -26,6 +26,6 @@ At home
       
 2. Finished hw_4
 
-    [electricity_charge.html](file:///Users/John/Documents/GitHub/CSX_RProject_Fall_2018/week_4/hw_4/hw_4_leafled%20map/electricity_charge.html)
+    [electricity_charge.html](https://goodjob0823.github.io/CSX_RProject_Fall_2018/week_4/hw_4/hw_4_leafled%20map/electricity_charge.html)
     
-    [Word Cloud.html](file:///Users/John/Documents/GitHub/CSX_RProject_Fall_2018/week_4/hw_4/hw_4_Word%20Cloud/Word_Cloud.html)
+    [Word Cloud.html](https://goodjob0823.github.io/CSX_RProject_Fall_2018/week_4/hw_4/hw_4_Word%20Cloud/Word_Cloud.html)
