@@ -1,7 +1,7 @@
 # electricity_charge <- as.data.frame("electricity_charge")
 
 Sys.setlocale(category = "LC_ALL", locale = "UTF-8")
-electricity_charge <- read.csv("/Users/John/Documents/GitHub/CSX_RProject_Fall_2018/week_4/hw_4/electricity_charge.csv",
+electricity_charge <- read.csv("/Users/John/Documents/GitHub/CSX_RProject_Fall_2018/week_4/hw_4/hw_4_leafled map/electricity_charge.csv",
                                encoding = "UTF-8", header = TRUE, stringsAsFactors = FALSE)
 electricity_charge
 

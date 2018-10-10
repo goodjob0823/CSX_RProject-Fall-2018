@@ -1,0 +1,100 @@
+---
+title: "Word Cloud_Eminem songs"
+author: "Ching-Yung Chang"
+date: "10/10/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+本次目標：觀察美國知名饒舌歌手Eminem，歌詞裡最常出現的英文單字(樣本取最受歡迎的20首歌)
+
+```{r warning = FALSE}
+library(NLP)
+library(tm)
+library(jiebaRD)
+library(jiebaR)
+library(RColorBrewer)
+library(wordcloud)
+```
+
+
+```{r pressure, results = "hide"}
+# 把20首歌的歌詞存成.txt檔並取出資料
+text <- readLines("Eminem songs.txt")
+text
+docs <- Corpus(VectorSource(text))
+inspect(docs)
+#要清洗掉的東西
+toSpace <- content_transformer(function(x, pattern) {
+  return (gsub(pattern, " ", x))}
+)
+```
+
+
+```{r warning = FALSE}
+#文本清理(把最常見的單字篩掉)
+docs <- tm_map(docs, toSpace, "a")
+docs <- tm_map(docs, toSpace, "and")
+docs <- tm_map(docs, toSpace, "or")
+docs <- tm_map(docs, toSpace, "the")
+docs <- tm_map(docs, toSpace, "it")
+docs <- tm_map(docs, toSpace, "you")
+docs <- tm_map(docs, toSpace, "I")
+docs <- tm_map(docs, toSpace, "on")
+docs <- tm_map(docs, toSpace, "in")
+docs <- tm_map(docs, toSpace, "out")
+docs <- tm_map(docs, toSpace, "to")
+docs <- tm_map(docs, toSpace, "is")
+docs <- tm_map(docs, toSpace, "are")
+docs <- tm_map(docs, toSpace, "he")
+docs <- tm_map(docs, toSpace, "she")
+docs <- tm_map(docs, toSpace, "so")
+docs <- tm_map(docs, toSpace, "up")
+docs <- tm_map(docs, toSpace, "down")
+docs <- tm_map(docs, toSpace, "this")
+docs <- tm_map(docs, toSpace, "that")
+docs <- tm_map(docs, toSpace, "my")
+docs <- tm_map(docs, toSpace, "your")
+docs <- tm_map(docs, toSpace, "me")
+docs <- tm_map(docs, toSpace, "his")
+docs <- tm_map(docs, toSpace, "her")
+docs <- tm_map(docs, toSpace, "one")
+docs <- tm_map(docs, toSpace, "not")
+#移除標點符號 (punctuation)
+#移除數字 (digits)
+#移除空白 (white space)
+docs <- tm_map(docs, removePunctuation)
+docs <- tm_map(docs, removeNumbers)
+docs <- tm_map(docs, stripWhitespace)
+```
+
+
+```{r}
+#有詞頻之後就可以開始畫文字雲
+mixseg = worker()
+jieba_tokenizer=function(d){
+  unlist(segment(d[[1]],mixseg))
+}
+seg = lapply(docs, jieba_tokenizer)
+freqFrame = as.data.frame(table(unlist(seg)))
+freqFrame = freqFrame[-c(1:34),]
+```
+
+
+```{r}
+#畫出文字雲
+wordcloud(docs,
+          random.order=FALSE, random.color=TRUE, 
+          rot.per=0, colors=brewer.pal(8, "Dark2"),
+          ordered.colors=FALSE,use.r.layout=FALSE,
+          fixed.asp=TRUE)
+```
+
+結論：
+綜合這20首歌的歌詞，可以發現用字非常的多元，但是篩選的過程似乎出了一點問題，原本想篩掉的and、but、you等單字
+還是最長使用的單字。撇開這個不看，會發現裡面出現很多情緒類的字詞，像是hurt、love、fuck、cry等詞，似乎想在每首歌
+裡訴諸一些情緒。此外，還有一些比較口語的字，這也是饒舌歌和一般歌曲不同之處。之後如果有空可能會再多找一些饒舌歌手
+的作品，歸納出不同歌手間的共通性。

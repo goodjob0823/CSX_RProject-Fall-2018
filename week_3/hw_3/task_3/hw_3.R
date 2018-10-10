@@ -1,7 +1,6 @@
 library(ggplot2)
-library(hexbin)
 library(dplyr)
-my_data <- read.csv("avocado.csv", header=T, sep=",")
+my_data <- read.csv("avocado.csv", header=T, sep=",", stringsAsFactors = F)
 my_data
 
 
@@ -46,4 +45,7 @@ View(my_data_Houston)
 
 my_data_composite <- bind_rows(my_data_Atlanta, my_data_Boston, my_data_California, my_data_Chicago, my_data_Houston)
 ggplot(data = my_data_composite, mapping = aes(x = region, y = AveragePrice/338)) + geom_bar(stat = "identity", color = "grey")
+
+
+
 

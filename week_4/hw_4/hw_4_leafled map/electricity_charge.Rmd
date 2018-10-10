@@ -1,0 +1,77 @@
+---
+title: "Electricity Charge Station_Taipei City"
+author: "Ching-Yung Chang"
+date: "10/10/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+leafletMap互動式地圖：台北市電動機車充電地址
+
+1. 使用台北市政府環保局的開放資料，畫出電動機車充電站的位置。
+2. 這份原始資料並沒有充電站的經緯度資料，因此先使用了googleway套件，輸入API key，
+   然後寫了for loop，把每個站點的地址轉成經緯度，再將這筆經緯度資料與原始數據合併。最後
+   使用了leaflet套件畫出每個站點的位置。
+
+
+先在開放資料平台下載csv檔並匯入
+
+```{r, results = "hide"}
+# 先設定環境，讓程式可以讀取中文字，然後取出.csv檔
+Sys.setlocale(category = "LC_ALL", locale = "UTF-8")
+
+electricity_charge <- read.csv("/Users/John/Documents/GitHub/CSX_RProject_Fall_2018/week_4/hw_4/hw_4_leafled map/electricity_charge.csv", encoding = "UTF-8", header = TRUE, stringsAsFactors = FALSE)
+
+electricity_charge
+```
+
+使用googleway套件，透過googlemap找出每個站點的經緯度
+
+```{r pressure, results = "hide"}
+# 設定place經緯度變數
+place <- c(electricity_charge$地址)
+# 建立place的data.frame
+place <- data.frame(lat=double(),lng=double())
+library(googleway)
+key <- "AIzaSyDoEDEiealBlFlpEUlW_pbUaVXX63hPHps"
+```
+
+利用迴圈把每個站點的地址轉成經緯度的dataframe
+
+```{r}
+#利用for loop將經緯度資料放入dataframe中
+for (i in 1:length(electricity_charge$地址)) {
+  geo_result <- google_geocode(address = electricity_charge$地址[i], key = key)
+  place <- rbind(place, geo_result$results$geometry$location)
+  Sys.sleep(0.01)
+}
+```
+
+透過cbind函式將兩個表結合
+
+```{r error=TRUE, results = "hide"}
+library(dplyr)
+df1 <- electricity_charge
+df2 <- place[-c(361:368),]
+df_place <- cbind(df1,df2)
+df_place
+
+lon <- sapply(df_place$lng, as.numeric)
+lat <- sapply(df_place$lat, as.numeric)
+```
+
+使用leaflet套件完成台北市電動機車充電站的互動地圖
+
+```{r}
+library(leaflet)
+map <- leaflet(df_place)
+map <- addTiles(map)
+map <- addMarkers(map, lon, lat, popup=paste("單位：", df_place$單位,"<br>",
+                                             "地址：", df_place$地址,"<br>",
+                                             "備註：", df_place$備註,"<br>"))
+map
+```
