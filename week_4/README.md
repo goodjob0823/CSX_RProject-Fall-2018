@@ -9,24 +9,22 @@ In class
   
 At home
 
-1. Learned R data visualization by viewing some tutorials.
+1. Learned Word Cloud Drawing by viewing some tutorials.
   
-   (1) 如何更快速的前處理資料？
+   (1) 文字探勘與文字雲
    
-      [DataScienceRBook探索式資料分析](https://yijutseng.github.io/DataScienceRBook/eda.html)
+      [用R進行中文 text Mining](http://rstudio-pubs-static.s3.amazonaws.com/12422_b2b48bb2da7942acaca5ace45bd8c60c.html)
       
-      [dplyr tutorial](http://genomicsclass.github.io/book/pages/dplyr_tutorial.html)
+      [Text mining and word cloud fundamentals in R : 5 simple steps you should know](http://www.sthda.com/english/wiki/text-mining-and-word-cloud-fundamentals-in-r-5-simple-steps-you-should-knowl)
    
    (2) 學習ggplot2的資源
    
-      [用資料說話，R語言有哪七種視覺化應用？](https://www.tipelse.com/article/686868.html)
+      [Drawing leaflet with GeoJSON & TopoJSON](https://rstudio.github.io/leaflet/json.html)
       
-      [ggplot2官方網站 tutorial with examples（推薦](https://plot.ly/ggplot2/getting-started/)
+      [地理區塊自己畫 – 使用 geojson.io](http://blog.infographics.tw/2016/01/draw-map-with-geojson-io/)
 
-   (2) plotly
       
-      [R Plot Function](https://www.datamentor.io/r-programming/plot-function/)
-      
-2. Finished hw_3 by doing data visualization on the dataset of U.S. avocado.
+2. Finished hw_4
 
-    [hw_3.html](https://goodjob0823.github.io/CSX_RProject_Fall_2018/week_3/hw_3/task_3/hw_3.html) 作業3
+    [electricity_charge.html](file:///Users/John/Documents/GitHub/CSX_RProject_Fall_2018/week_4/hw_4/hw_4_leafled%20map/electricity_charge.html)
+    [Word Cloud.html](file:///Users/John/Documents/GitHub/CSX_RProject_Fall_2018/week_4/hw_4/hw_4_Word%20Cloud/Word_Cloud.html)
