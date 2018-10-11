@@ -46,7 +46,8 @@ DF <- tidy(tf)
 
 
 # tf-idf computation
-
+N = tdm$ncol
+tf <- apply()
 
 
 
@@ -72,6 +73,9 @@ DF <- tidy(tf)
 
 
 
+
+# 須解決：
+# (1) 英文字如何正確斷詞！(google一下)(google歐美文章，他們都用英文斷詞，有類似的問題！)
 
 
 
