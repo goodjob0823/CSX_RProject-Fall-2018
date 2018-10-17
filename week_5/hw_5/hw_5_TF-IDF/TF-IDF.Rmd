@@ -1,0 +1,138 @@
+---
+title: "TF-IDF_Trump's election speeches"
+author: "Ching-Yung Chang"
+date: "10/17/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r warning = FALSE, results = "hide", message = FALSE}
+library(NLP)
+library(tm)
+library(stats)
+library(proxy)
+library(dplyr)
+library(readtext)
+library(slam)
+library(Matrix)
+library(tidytext)
+library(ggplot2)
+```
+
+
+
+```{r}
+setwd("~/Documents/GitHub/CSX_RProject_Fall_2018/week_5/hw_5/hw_5_TF-IDF/trump")
+rawData <- readtext("*.txt")
+rawData 
+```
+
+
+
+```{r warning = FALSE, results = "hide", message = FALSE}
+rawData$doc_id <- gsub("Trump_"," ",rawData$doc_id)
+print(rawData$doc_id)
+rawData$doc_id <- gsub("-16.txt"," ",rawData$doc_id)
+print(rawData$doc_id)
+```
+
+
+
+```{r warning = FALSE, results = "hide", message = FALSE}
+docs <- Corpus(VectorSource(rawData$text))
+toSpace <- content_transformer(function(x, pattern) {
+  return(gsub(pattern, " ", x))
+})
+docs <- tm_map(docs, removePunctuation)
+docs <- tm_map(docs, removeNumbers)
+docs <- tm_map(docs, tolower)
+docs <- tm_map(docs, removeWords, stopwords("english")) 
+docs <- tm_map(docs, stripWhitespace)
+```
+
+
+
+```{r}
+tdm <- TermDocumentMatrix(docs)   
+tdm
+```
+
+
+
+```{r warning = FALSE, results = "hide", message = FALSE}
+print(tf <- as.matrix(tdm))
+DF <- tidy(tf) 
+DF <- DF[-1, ]
+```
+
+
+
+```{r warning = FALSE, results = "hide", message = FALSE}
+speech_data <- c(rawData$doc_id)
+print(speech_data)
+colnames(DF) <- c("", speech_data)
+print(colnames(DF))
+```
+
+
+
+```{r warning = FALSE, results = "hide", message = FALSE}
+tf <- apply(tdm, 2, sum)
+idfCal <- function(word_doc){log2((length(word_doc)+1) / nnzero(word_doc))}
+idf <- apply(tdm, 1, idfCal)
+doc.tfidf <- as.matrix(tdm)
+doc.tfidf[ ,-1]
+for(i in 1:nrow(tdm)){
+  for(j in 1:ncol(tdm)){
+    doc.tfidf[i,j] <- (doc.tfidf[i,j] / tf[j]) * idf[i]
+  }
+}
+
+findZeroId <- as.matrix(apply(doc.tfidf, 1, sum))
+tfidfnn <- doc.tfidf[-which(findZeroId == 0),]
+
+write.csv(tfidfnn, "show.csv")
+
+
+colnames(doc.tfidf) <- speech_data
+print(colnames(doc.tfidf))
+```
+
+
+
+```{r}
+termFrequency = rowSums(as.matrix(tdm))
+termFrequency = subset(termFrequency, termFrequency>=10)
+
+df = data.frame(term=names(termFrequency), freq=termFrequency)
+head(termFrequency,10)
+tail(termFrequency,10)
+```
+
+
+
+```{r}
+high.freq=tail(sort(termFrequency),n=30)
+hfp.df=as.data.frame(sort(high.freq))
+hfp.df$names <- rownames(hfp.df)
+```
+
+
+
+```{r}
+library(knitr)
+library(ggplot2)
+# png('Trump_speeches.png')
+
+ggplot(hfp.df, aes(reorder(names,high.freq), high.freq)) +
+  geom_bar(stat="identity") + coord_flip() + 
+  xlab("Terms") + ylab("Frequency") + 
+  ggtitle("Term frequencies")
+```
+
+

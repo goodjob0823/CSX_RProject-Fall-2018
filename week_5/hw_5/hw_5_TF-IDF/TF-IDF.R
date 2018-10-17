@@ -1,19 +1,15 @@
-library(NLP)
-library(tm)
-library(stats)
-library(proxy)
-library(dplyr)
-library(readtext)
-library(jiebaRD)
-library(jiebaR)
-library(slam)
-library(Matrix)
-library(tidytext)
-
-
+packages <- c("NLP", "tm", "stats", "proxy", "dplyr", "readtext", "slam", "Matrix", "tidytext", "ggplot2")
+lapply(packages, library, character.only = TRUE)
 
 rawData <- readtext("*.txt")
 rawData 
+
+rawData$doc_id <- gsub("Trump_"," ",rawData$doc_id)
+print(rawData$doc_id)
+rawData$doc_id <- gsub("-16.txt"," ",rawData$doc_id)
+print(rawData$doc_id)
+
+
 
 docs <- Corpus(VectorSource(rawData$text))
 #inspect(docs)
@@ -24,39 +20,106 @@ toSpace <- content_transformer(function(x, pattern) {
 })
 docs <- tm_map(docs, removePunctuation)
 docs <- tm_map(docs, removeNumbers)
+docs <- tm_map(docs, tolower)   
+# docs <- tm_map(docs, PlainTextDocument)
+docs <- tm_map(docs, removeWords, stopwords("english"))   
+# docs <- tm_map(docs, PlainTextDocument)
 docs <- tm_map(docs, stripWhitespace)
+# docs <- tm_map(docs, PlainTextDocument)
+
+tdm <- TermDocumentMatrix(docs)   
+tdm
+print(tf <- as.matrix(tdm))
+DF <- tidy(tf) 
+DF <- DF[-1, ]
+
+speech_data <- c(rawData$doc_id)
+print(speech_data)
+colnames(DF) <- c("", speech_data)
+print(colnames(DF))
 
 
-# words cut
-common_words <- read.csv("Top 100 common words.csv")
-mixseg <- worker()
-words <- as.matrix(common_words)
-new_user_word(mixseg, words)
 
-jieba_tokenizer <- function(d){
-  unlist(segment(d[[1]], mixseg))
+tf <- apply(tdm, 2, sum)
+idfCal <- function(word_doc){log2((length(word_doc)+1) / nnzero(word_doc))}
+idf <- apply(tdm, 1, idfCal)
+doc.tfidf <- as.matrix(tdm)
+doc.tfidf[ ,-1]
+for(i in 1:nrow(tdm)){
+  for(j in 1:ncol(tdm)){
+    doc.tfidf[i,j] <- (doc.tfidf[i,j] / tf[j]) * idf[i]
+  }
 }
-seg <- lapply(docs, jieba_tokenizer)
-freqFrame <- as.data.frame(table(unlist(seg)))
 
-d.corpus <- Corpus(VectorSource(seg))
-tdm <- TermDocumentMatrix(d.corpus)
-tf <- as.matrix(tdm)
-DF <- tidy(tf)
+findZeroId <- as.matrix(apply(doc.tfidf, 1, sum))
+tfidfnn <- doc.tfidf[-which(findZeroId == 0),]
 
+write.csv(tfidfnn, "show.csv")
 
-# tf-idf computation
-N = tdm$ncol
-tf <- apply()
+colnames(doc.tfidf) <- speech_data
+print(colnames(doc.tfidf))
 
 
+library(ggplot2)
+termFrequency = rowSums(as.matrix(tdm))
+termFrequency = subset(termFrequency, termFrequency>=10)
+
+df = data.frame(term=names(termFrequency), freq=termFrequency)
+head(termFrequency,10)
+tail(termFrequency,10)
+
+
+high.freq=tail(sort(termFrequency),n=30)
+hfp.df=as.data.frame(sort(high.freq))
+hfp.df$names <- rownames(hfp.df) 
+
+# ----------------------------------------------------
+
+apply(doc.tfidf, 1, function(x){
+    x2 <- sort(x, TRUE)
+    x2[x2 >= x2[3]]
+  })
+
+  
+TopWords <- data.frame()
+for( id in c(1:n) )
+{
+  dayMax = order(doc.tfidf[,id+1], decreasing = TRUE)
+  showResult = t(as.data.frame(doc.tfidf[dayMax[1:5],1]))
+  TopWords = rbind(TopWords, showResult)
+}
+rownames(TopWords) = colnames(doc.tfidf)[2:(n+1)]
+TopWords = droplevels(TopWords)
+kable(TopWords)
+  
+  
+library(varhandle)
+tempGraph$freq = unfactor(tempGraph$freq)
+ggplot(tempGraph, aes(speech, freq)) + 
+  geom_point(aes(color = words, shape = words), size = 5) +
+  geom_line(aes(group = words, linetype = words))
+
+# ----------------------------------------------------
+
+library(ggplot2)
+ggplot(hfp.df, aes(reorder(names,high.freq), high.freq)) + 
+  geom_bar(stat="identity") + coord_flip() + 
+  xlab("Terms") + ylab("Frequency") + 
+  ggtitle("Term frequencies")
 
 
 
 
+# ----------------------------------------------------
+  
+  
+  
+  
 
 
 
+
+---------------------------------------------------------------------------------
 
 
 # Note(心得)(2018/10/11):
@@ -76,7 +139,11 @@ tf <- apply()
 
 # 須解決：
 # (1) 英文字如何正確斷詞！(google一下)(google歐美文章，他們都用英文斷詞，有類似的問題！)
+# (2) tf、DF的變數名稱如何更改......
+# (3) 檔案命名在排序有沒有比較快的做法(ex. 寫程式...)？ex. sep、oct做排序，還是只能改檔名成數字格式(日期)再排序？
+#     週四問一下老師！總不可能徒法煉鋼...(64個檔案還好...但檔案多一定要想其他辦法！)
+# (4) setwd()的檔案也沒有照順序排......有空再研究！先把矩陣都弄好！
+# (5) gsub 如何寫數字迴圈，刪除rawData數字？
+# (6) 如何把DF的欄位變數順序更改，使得從七月開始、十一月結束？(只能土法煉鋼？)
 
-
-
-
+# (7) R Markdown圖片弄不出來......禮拜四問一下！
