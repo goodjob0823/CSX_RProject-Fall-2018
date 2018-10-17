@@ -9,6 +9,8 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+TF-IDF_川普選前演講分析
+1. 從Kaggle下載川普在總統大選前三個月的64場演講逐字稿，分析演講用字的使用頻率。
 
 
 ```{r warning = FALSE, results = "hide", message = FALSE}
@@ -24,7 +26,7 @@ library(tidytext)
 library(ggplot2)
 ```
 
-
+使用readtext一次下載多個txt檔
 
 ```{r}
 setwd("~/Documents/GitHub/CSX_RProject_Fall_2018/week_5/hw_5/hw_5_TF-IDF/trump")
@@ -32,7 +34,7 @@ rawData <- readtext("*.txt")
 rawData 
 ```
 
-
+為了讓原始資料第一行(rawData$doc_id)元素更簡潔，用gsub把檔名中多餘的文字刪掉
 
 ```{r warning = FALSE, results = "hide", message = FALSE}
 rawData$doc_id <- gsub("Trump_"," ",rawData$doc_id)
@@ -41,7 +43,7 @@ rawData$doc_id <- gsub("-16.txt"," ",rawData$doc_id)
 print(rawData$doc_id)
 ```
 
-
+建立文本資料結構與基本文字清洗，刪去標點符號、數字以及一些英文常見字詞
 
 ```{r warning = FALSE, results = "hide", message = FALSE}
 docs <- Corpus(VectorSource(rawData$text))
@@ -55,7 +57,7 @@ docs <- tm_map(docs, removeWords, stopwords("english"))
 docs <- tm_map(docs, stripWhitespace)
 ```
 
-
+建立文本矩陣 TermDocumentMatrix
 
 ```{r}
 tdm <- TermDocumentMatrix(docs)   
@@ -70,7 +72,8 @@ DF <- tidy(tf)
 DF <- DF[-1, ]
 ```
 
-
+將原始資料第一行(rawData$doc_id)的64個演講名稱，設定為向量。之後，再將新的資料(所有字詞在各場演講
+出現的次數)的變數名稱，轉成自己命名的變數名稱。
 
 ```{r warning = FALSE, results = "hide", message = FALSE}
 speech_data <- c(rawData$doc_id)
@@ -80,6 +83,13 @@ print(colnames(DF))
 ```
 
 
+
+```{r}
+head(DF, 5)
+tail(DF, 5)
+```
+
+將已建好的 TDM 轉成 TF-IDF
 
 ```{r warning = FALSE, results = "hide", message = FALSE}
 tf <- apply(tdm, 2, sum)
@@ -103,7 +113,7 @@ colnames(doc.tfidf) <- speech_data
 print(colnames(doc.tfidf))
 ```
 
-
+計算新資料的前十列、後十列文字，在所有演講出現的次數
 
 ```{r}
 termFrequency = rowSums(as.matrix(tdm))
@@ -114,7 +124,7 @@ head(termFrequency,10)
 tail(termFrequency,10)
 ```
 
-
+找出所有演講中，出現次數最高的30個字詞
 
 ```{r}
 high.freq=tail(sort(termFrequency),n=30)
@@ -122,9 +132,9 @@ hfp.df=as.data.frame(sort(high.freq))
 hfp.df$names <- rownames(hfp.df)
 ```
 
+畫柱狀圖，顯示出現次數最高的30個字，各別出現的次數
 
-
-```{r}
+```{r error = FALSE}
 library(knitr)
 library(ggplot2)
 # png('Trump_speeches.png')
@@ -135,4 +145,30 @@ ggplot(hfp.df, aes(reorder(names,high.freq), high.freq)) +
   ggtitle("Term frequencies")
 ```
 
+接著找出次數最高的50個字詞
 
+```{r}
+high.freq_1=tail(sort(termFrequency),n=50)
+hfp.df_1=as.data.frame(sort(high.freq_1))
+hfp.df_1$names <- rownames(hfp.df_1)
+```
+
+
+
+```{r error = FALSE}
+library(knitr)
+library(ggplot2)
+# png('Trump_speeches.png')
+
+ggplot(hfp.df_1, aes(reorder(names,high.freq_1), high.freq_1)) +
+  geom_bar(stat="identity") + coord_flip() + 
+  xlab("Terms") + ylab("Frequency") + 
+  ggtitle("Term frequencies")
+```
+
+
+結論：在這些演講中，扣除will、going、one、just等常見的字詞，川普較常提到的字詞包含people、country、
+      hillary clinton、jobs、america/american等，而這些詞也正是候選人在演講中常提到的詞。上述情形
+      是最常使用的30個字，一旦把範圍拉到最常使用的50個字詞，此時多出了trade、government、money、
+      plan等詞，比較值得注意的詞大概就是trade，最近幾個月鬧得沸沸揚揚的中美貿易戰，也許能呼應川普
+      在演講時提到有關貿易的政策。
