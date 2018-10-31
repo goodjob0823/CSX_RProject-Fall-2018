@@ -1,4 +1,4 @@
-packages <- c("NLP", "tm", "stats", "proxy", "dplyr", "readtext", "slam", "Matrix", "tidytext", "ggplot2")
+packages <- c("NLP", "tm", "stats", "proxy", "dplyr", "readtext", "slam", "Matrix", "tidytext", "ggplot2", "stringr")
 lapply(packages, library, character.only = TRUE)
 
 rawData <- readtext("*.txt")
@@ -27,11 +27,18 @@ docs <- tm_map(docs, removeWords, stopwords("english"))
 docs <- tm_map(docs, stripWhitespace)
 # docs <- tm_map(docs, PlainTextDocument)
 
+tokenizer = function(d){
+  unlist(strsplit(d[[1]], split = " "))
+}
+seg = lapply(docs, tokenizer)
+
+
+d.corpus <- Corpus(VectorSource(seg))
 tdm <- TermDocumentMatrix(docs)   
 tdm
 print(tf <- as.matrix(tdm))
 DF <- tidy(tf) 
-DF <- DF[-1, ]
+# DF <- DF[-1, ]
 
 speech_data <- c(rawData$doc_id)
 print(speech_data)
@@ -53,6 +60,7 @@ for(i in 1:nrow(tdm)){
 
 findZeroId <- as.matrix(apply(doc.tfidf, 1, sum))
 tfidfnn <- doc.tfidf[-which(findZeroId == 0),]
+head(tfidfnn)
 
 write.csv(tfidfnn, "show.csv")
 
@@ -103,4 +111,92 @@ apply(doc.tfidf, 1, function(x){
   x2 <- sort(x, TRUE)
   x2[x2 >= x2[3]]
 })
+
+
+
+# ---------------------------------------------------------------
+
+
+# 10/18(四)
+
+DF_1 <- t(DF)
+DF_1
+
+DF_1.df <- as.data.frame(DF_1)
+DF_1.df
+
+colnames(DF_1.df) <- c(DF_1.df[1, ])
+DF_1.df <- DF_1.df[-1, ]
+
+
+
+# row.names(DF) <- c(DF[ ,1])
+# DF <- DF[ ,-1]
+
+
+
+# 要同個資料結構才可以彼此命名！
+
+row.names(DF)
+row.names(DF) <- c("a")
+row.names(DF)[1]
+row.names(DF)[1] <- "a"
+row.names(DF)[1]
+row.names(DF)[2] <- "b"
+row.names(DF)[2]
+# row.names(DF) = DF[:,1]
+# DF[:,1]
+# DF[,1]
+
+
+type(DF[,1])
+mode(DF[,1])
+unlist(DF[,1])
+mode(unlist(DF[,1]))
+row.names(DF) <- unlist(DF[,1])
+row.names(DF)
+
+
+View(DF)
+row.names(DF) <- unlist(DF[,1])
+DF <- DF[,-1]
+print(DF)
+
+
+
+
+library(RColorBrewer)
+library(cluster)
+library(pvclust)
+library(xtable)
+# library(limma)
+library(plyr)
+library(ggplot2)
+library(car)
+library(lattice)
+
+pcs <- prcomp(DF_1, center = F, scale = F)
+pcs
+plot(pcs)
+
+
+
+library(RColorBrewer)
+library(wordcloud2)
+wordcloud2(data = [[64]], size = 0.5)
+
+
+install.packages('devtools')
+devtools::install_github("lchiffon/wordcloud2")
+
+
+
+library(RCurl)
+library(httr)
+library(devtools)
+library(jsonlite)
+devtools::install_github("lchiffon/wordcloud2")
+
+
+
 
