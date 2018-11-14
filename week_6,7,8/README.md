@@ -26,7 +26,7 @@ At home
       
 2. Finished hw_6 (week 6 - week 8)
 
-    [electricity_charge.html](https://goodjob0823.github.io/CSX_RProject_Fall_2018/week_6,7,8/TextMining.html)
+    [TextMining.html](https://goodjob0823.github.io/CSX_RProject_Fall_2018/week_6,7,8/TextMining.html)
     
     [R shiny_Textmining](https://goodjob0823.shinyapps.io/Textmining/)
     [備註：沒成功轉換到shinyapps.io，目前還沒找到問題，先放上原始檔案]
