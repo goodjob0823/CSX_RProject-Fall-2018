@@ -29,7 +29,7 @@ library(ggplot2)
 使用readtext一次下載多個txt檔
 
 ```{r}
-setwd("~/Documents/GitHub/CSX_RProject_Fall_2018/week_5/hw_5/hw_5_TF-IDF/trump")
+setwd("~/Documents/GitHub/CSX_RProject_Fall_2018/week_6,7,8/trump")
 rawData <- readtext("*.txt")
 rawData 
 ```
@@ -55,6 +55,105 @@ docs <- tm_map(docs, removeNumbers)
 docs <- tm_map(docs, tolower)
 docs <- tm_map(docs, removeWords, stopwords("english")) 
 docs <- tm_map(docs, stripWhitespace)
+```
+
+
+
+```{r}
+library(jiebaRD)
+library(jiebaR)
+library(RColorBrewer)
+library(wordcloud)
+
+mixseg = worker()
+jieba_tokenizer = function(d)
+{
+  unlist( segment(d[[1]], mixseg) )
+}
+
+count_token = function(d)
+{
+  as.data.frame(table(d))
+}
+
+idfCal <- function(word_doc, n)
+{ 
+  log2( n / nnzero(word_doc) ) 
+}
+###
+seg_date = lapply(docs, jieba_tokenizer)
+tokens_date = lapply(seg_date, count_token)
+###
+n_date = length(seg_date)
+TDM_date = tokens_date[[1]]
+dateNames <- rawData[,"doc_id"]
+for(doc_id in c(2:n_date))
+{
+  TDM_date = merge(TDM_date, tokens_date[[doc_id]], by="d", all = TRUE)
+  names(TDM_date) = c('d', dateNames[1:doc_id])
+}
+TDM_date[is.na(TDM_date)] <- 0 #將NA填0
+###
+# tf_date <- apply(as.matrix(TDM_date[,2:(n_date + 1)]), 2, sum) #直向相加計算總數
+# idf_date <- apply(as.matrix(TDM_date[,2:(n_date + 1)]), 1, idfCal, n=n_date)
+doc.tfidf_date <- TDM_date
+
+# tempY_date = matrix(rep(c(as.matrix(tf_date)), each = length(idf_date)), 
+#                       nrow = length(idf_date))
+# tempX_date = matrix(rep(c(as.matrix(idf_date)), each = length(tf_date)), 
+#                       ncol = length(tf_date), byrow = TRUE)
+# doc.tfidf_date[,2:(n+1)] <- (doc.tfidf_date[,2:(n+1)] / tempY_date) * tempX_date
+
+
+#4. 畫各author前(十)多用字 (input.author)
+input.date <- "AshevilleNC_Sep-12"
+words_count_date = TDM_date[,1:2]
+colnames(words_count_date) = c('word', 'count')
+words_count_date = words_count_date[rev(order(words_count_date$count)),]
+# words_count_date$count = sort(words_count_date$count, decreasing = T)
+rownames(words_count_date)=NULL
+
+ggplot(words_count_date[1:20,], aes(x = reorder(word, count), y =count)) + 
+  geom_bar(stat = "identity", fill='lightblue') + 
+  coord_flip() +
+  labs(x='word', y='count', title=paste('Author: ', input.date)) +
+  theme(panel.background = element_blank(),
+        axis.title = element_text(color = '#2d2d2d'),
+        axis.text.x = element_text(hjust = 1, size=15),
+        axis.text.y = element_text(hjust = 1, size=15),
+        strip.text.x = element_text(color='#2d2d2d',face='bold',size=10),
+        plot.title = element_text(hjust=0.5,face='bold',size=15))
+###
+rownames(doc.tfidf_date) = doc.tfidf_date$d
+doc.tfidf_date <- doc.tfidf_date[,1:n_date+1]
+
+# docs.cos.sim_date <- apply(doc.tfidf_date, 2, cos, y = doc.tfidf_date[, c(input.date)])
+# sort(docs.cos.sim_date, decreasing = T)[1:10]
+```
+
+
+...........
+
+```{r warning = False}
+library(jiebaRD)
+library(jiebaR)
+library(RColorBrewer)
+library(wordcloud)
+
+#有詞頻之後就可以開始畫文字雲
+mixseg = worker()
+jieba_tokenizer=function(d){
+  unlist(segment(d[[1]],mixseg))
+}
+seg = lapply(docs, jieba_tokenizer)
+freqFrame = as.data.frame(table(unlist(seg)))
+
+#畫出文字雲
+wordcloud(docs,
+          random.order=FALSE, random.color=TRUE, 
+          rot.per=0, colors=brewer.pal(8, "Dark2"),
+          ordered.colors=FALSE,use.r.layout=FALSE,
+          fixed.asp=TRUE)
 ```
 
 建立文本矩陣 TermDocumentMatrix
@@ -185,34 +284,6 @@ colnames(DF_1.df) <- c(DF_1.df[1, ])
 DF_1.df <- DF_1.df[-1, ]
 ```
 
-
-
-```{r}
-# row.names(DF)
-# row.names(DF) <- c("a")
-# row.names(DF)[1]
-# row.names(DF)[1] <- "a"
-# row.names(DF)[1]
-# row.names(DF)[2] <- "b"
-# row.names(DF)[2]
-```
-
-
-
-```{r}
-# type(DF[,1])
-# mode(DF[,1])
-# unlist(DF[,1])
-# mode(unlist(DF[,1]))
-# row.names(DF) <- unlist(DF[,1])
-# row.names(DF)
-# 
-# 
-# View(DF)
-# row.names(DF) <- unlist(DF[,1])
-# DF <- DF[,-1]
-# print(DF)
-```
 
 
 
@@ -408,13 +479,4 @@ fviz_nbclust(data_latest,
     
 labs(title = "Avg.Silhouette Method for K-Means") 
 ```
-
-
-
-```{r}
-
-```
-
-
-
 
