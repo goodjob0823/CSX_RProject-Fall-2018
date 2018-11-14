@@ -28,7 +28,7 @@ library(ggplot2)
 
 使用readtext一次下載多個txt檔
 
-```{r}
+```{r warning = FALSE, results = "hide", message = FALSE}
 setwd("~/Documents/GitHub/CSX_RProject_Fall_2018/week_6,7,8/trump")
 rawData <- readtext("*.txt")
 rawData 
@@ -59,7 +59,7 @@ docs <- tm_map(docs, stripWhitespace)
 
 
 
-```{r}
+```{r warning = FALSE, results = "hide", message = FALSE}
 library(jiebaRD)
 library(jiebaR)
 library(RColorBrewer)
@@ -98,14 +98,7 @@ TDM_date[is.na(TDM_date)] <- 0 #將NA填0
 # idf_date <- apply(as.matrix(TDM_date[,2:(n_date + 1)]), 1, idfCal, n=n_date)
 doc.tfidf_date <- TDM_date
 
-# tempY_date = matrix(rep(c(as.matrix(tf_date)), each = length(idf_date)), 
-#                       nrow = length(idf_date))
-# tempX_date = matrix(rep(c(as.matrix(idf_date)), each = length(tf_date)), 
-#                       ncol = length(tf_date), byrow = TRUE)
-# doc.tfidf_date[,2:(n+1)] <- (doc.tfidf_date[,2:(n+1)] / tempY_date) * tempX_date
-
-
-#4. 畫各author前(十)多用字 (input.author)
+###
 input.date <- "AshevilleNC_Sep-12"
 words_count_date = TDM_date[,1:2]
 colnames(words_count_date) = c('word', 'count')
@@ -127,38 +120,12 @@ ggplot(words_count_date[1:20,], aes(x = reorder(word, count), y =count)) +
 rownames(doc.tfidf_date) = doc.tfidf_date$d
 doc.tfidf_date <- doc.tfidf_date[,1:n_date+1]
 
-# docs.cos.sim_date <- apply(doc.tfidf_date, 2, cos, y = doc.tfidf_date[, c(input.date)])
-# sort(docs.cos.sim_date, decreasing = T)[1:10]
 ```
 
-
-...........
-
-```{r warning = False}
-library(jiebaRD)
-library(jiebaR)
-library(RColorBrewer)
-library(wordcloud)
-
-#有詞頻之後就可以開始畫文字雲
-mixseg = worker()
-jieba_tokenizer=function(d){
-  unlist(segment(d[[1]],mixseg))
-}
-seg = lapply(docs, jieba_tokenizer)
-freqFrame = as.data.frame(table(unlist(seg)))
-
-#畫出文字雲
-wordcloud(docs,
-          random.order=FALSE, random.color=TRUE, 
-          rot.per=0, colors=brewer.pal(8, "Dark2"),
-          ordered.colors=FALSE,use.r.layout=FALSE,
-          fixed.asp=TRUE)
-```
 
 建立文本矩陣 TermDocumentMatrix
 
-```{r}
+```{r warning = FALSE, results = "hide", message = FALSE}
 tdm <- TermDocumentMatrix(docs)   
 tdm
 ```
@@ -181,12 +148,6 @@ colnames(DF) <- c("", speech_data)
 print(colnames(DF))
 ```
 
-
-
-```{r}
-head(DF, 5)
-tail(DF, 5)
-```
 
 將已建好的 TDM 轉成 TF-IDF
 
@@ -214,7 +175,7 @@ print(colnames(doc.tfidf))
 
 計算新資料的前十列、後十列文字，在所有演講出現的次數
 
-```{r}
+```{r warning = FALSE, results = "hide", message = FALSE}
 termFrequency = rowSums(as.matrix(tdm))
 termFrequency = subset(termFrequency, termFrequency>=10)
 
@@ -225,7 +186,7 @@ tail(termFrequency,10)
 
 找出所有演講中，出現次數最高的30個字詞
 
-```{r}
+```{r warning = FALSE, results = "hide", message = FALSE}
 high.freq=tail(sort(termFrequency),n=30)
 hfp.df=as.data.frame(sort(high.freq))
 hfp.df$names <- rownames(hfp.df)
@@ -233,7 +194,7 @@ hfp.df$names <- rownames(hfp.df)
 
 畫柱狀圖，顯示出現次數最高的30個字，各別出現的次數
 
-```{r error = FALSE}
+```{r warning = FALSE, results = "hide", message = FALSE}
 library(knitr)
 library(ggplot2)
 # png('Trump_speeches.png')
@@ -246,7 +207,7 @@ ggplot(hfp.df, aes(reorder(names,high.freq), high.freq)) +
 
 接著找出次數最高的50個字詞
 
-```{r}
+```{r warning = FALSE, results = "hide", message = FALSE}
 high.freq_1=tail(sort(termFrequency),n=50)
 hfp.df_1=as.data.frame(sort(high.freq_1))
 hfp.df_1$names <- rownames(hfp.df_1)
@@ -254,7 +215,7 @@ hfp.df_1$names <- rownames(hfp.df_1)
 
 
 
-```{r error = FALSE}
+```{r warning = FALSE, results = "hide", message = FALSE}
 library(knitr)
 library(ggplot2)
 # png('Trump_speeches.png')
@@ -266,14 +227,12 @@ ggplot(hfp.df_1, aes(reorder(names,high.freq_1), high.freq_1)) +
 ```
 
 
-結論：在這些演講中，扣除will、going、one、just等常見的字詞，川普較常提到的字詞包含people、country、
-      hillary clinton、jobs、america/american等，而這些詞也正是候選人在演講中常提到的詞。上述情形
-      是最常使用的30個字，一旦把範圍拉到最常使用的50個字詞，此時多出了trade、government、money、
-      plan等詞，比較值得注意的詞大概就是trade，最近幾個月鬧得沸沸揚揚的中美貿易戰，也許能呼應川普
-      在演講時提到有關貿易的政策。
+結論：在這些演講中，扣除will、going、one、just等常見的字詞，川普較常提到的字詞包含people、country、hillary clinton、jobs、america/american等，而這些詞也正是候選人在演講中常提到的詞。上述情形是最常使用的30個字，一旦把範圍拉到最常使用的50個字詞，此時多出了trade、government、money、
+plan等詞，比較值得注意的詞大概就是trade，最近幾個月鬧得沸沸揚揚的中美貿易戰，也許能呼應川普
+在演講時提到有關貿易的政策。
      
  
-```{r}
+```{r warning = FALSE, results = "hide", message = FALSE}
 DF_1 <- t(DF)
 DF_1
 
@@ -287,7 +246,7 @@ DF_1.df <- DF_1.df[-1, ]
 
 
 
-```{r}
+```{r warning = FALSE, results = "hide", message = FALSE}
 # scale(DF)
 pcs <- prcomp(DF[ ,-1], center = T, scale = T)
 pcs
@@ -295,8 +254,9 @@ plot(pcs)
 ```
 
 
+使用PCA，描繪出兩個主成份群之間的關係
 
-```{r}
+```{r warning = FALSE, results = "hide", message = FALSE}
 library(magrittr)
 pcs$x
 
@@ -306,7 +266,7 @@ pcs$x %>%
 ```
 
 
-```{r}
+```{r warning = FALSE, results = "hide", message = FALSE}
 apply(DF[ ,2:65], 1, sum)
 total_amount <- as.vector(apply(DF[ ,2:65], 1, sum))
 DF.df <- cbind(DF, total_amount)
@@ -314,28 +274,11 @@ DF.df.sort <- DF.df[order(DF.df$total_amount, decreasing = T), ]
 ```
 
 
+因為演講內容有許多字無助於分析，因此篩去一些無關緊要的字詞，將剩下重要的字依據不同的性質，
+分成5大類，分別是"name"、"military/safety"、"ethnics/human rights"、"country/state/city"、
+"policy/economy"。
 
-
-```{r}
-data <- DF[ ,-1]
-
-E.dist <- dist(data, method = "euclidean")
-# par(mfrow=c(1,2))
-h.E.cluster <- hclust(E.dist)
-plot(h.E.cluster, xlab = "歐式距離")
-
-
-E.dist <- dist(data, method="euclidean")      
-h.cluster <- hclust(E.dist, method="ward.D2") 
-
-plot(h.cluster)
-abline(h=9, col="red")
-```
-
-
-
-
-```{r}
+```{r warning = FALSE, results = "hide", message = FALSE}
 row.names(DF.df.sort) <- c(DF.df.sort[,1])
 DF.df.sort_latest <- as.data.frame(DF.df.sort[c("hillary","clinton","clintons","obama","hillarys","obamaclinton","illegal","crime","criminal","corruption","violence","killed","violent","crime","weapons","isis","military","terrorism","terrorists","crisis","nuclear","borders","africanamerican","africanamericans","african","children","school","schools","education","childcare","women","woman","workers","refugees","immigrant","refugee","veterans","lobbyist","religious","justice","justices","mexico","china","islamic","iraq","syria","russia","americas","libya","korea","haiti","pennsylvania","ohio","florida","carolina","hampshire","detroit","chicago","baltimore","arizona","orlando","hispanic","poverty","lowincome","jobs","money","prosperity","wealthy","jobkilling","nafta","tpp","transpacific","economic","economy","deficit","debt","currency","infrastructure","trade","obamacare","reform","reforms","jobkilling"),])
 row.names(DF.df.sort_latest) <- c(1:83)    
@@ -374,9 +317,10 @@ rect.hclust(hc.w, k = 5)
 ```
 
 
+使用K-Means進行分群：
+以平均數作為聚集點
 
-
-```{r}
+```{r warning = FALSE, results = "hide", message = FALSE}
 library(xtable)
 library(factoextra)
 
@@ -398,9 +342,10 @@ fviz_cluster(data_latest.km,           # 分群結果
 ```
 
 
+使用K-Medoid進行分群：
+以中位數作為聚集點
 
-
-```{r}
+```{r warning = FALSE, results = "hide", message = FALSE}
 library(cluster)
 
 data_latest.kmedoid <- pam(data_latest, k = 5)     # pam = Partitioning Around Medoids
@@ -422,9 +367,10 @@ fviz_cluster(data_latest.kmedoid,   # 分群結果
 ```
 
 
+使用Hierarchical Clustering的Elbow Method：
+最佳分群數為5群
 
-
-```{r}
+```{r warning = FALSE, results = "hide", message = FALSE}
 fviz_nbclust(data_latest, 
              FUNcluster = hcut,  # hierarchical clustering
              method = "wss",     # total within sum of square
@@ -438,8 +384,10 @@ geom_vline(xintercept = 5,       # 在 X=5的地方
 ```
 
 
+使用K-Means的Elbow Method：
+最佳分群數為5群
 
-```{r}
+```{r warning = FALSE, results = "hide", message = FALSE}
 fviz_nbclust(data_latest, 
              FUNcluster = kmeans,# K-Means
              method = "wss",     # total within sum of square
@@ -453,8 +401,10 @@ geom_vline(xintercept = 5,       # 在 X=5的地方
 ```
 
 
+使用K-Medoid的Elbow Method：
+最佳分群數為5群
 
-```{r}
+```{r warning = FALSE, results = "hide", message = FALSE}
 fviz_nbclust(data_latest, 
              FUNcluster = pam,   # K-Medoid
              method = "wss",     # total within sum of square
@@ -468,9 +418,10 @@ geom_vline(xintercept = 5,       # 在 X=5的地方
 ```
 
 
+使用平均側影法(Average silhouette Method：
+取得每個資料點的側影平均值，來決定最佳的分群數目，此時最佳分群數為2群
 
-
-```{r}
+```{r warning = FALSE, results = "hide", message = FALSE}
 fviz_nbclust(data_latest, 
              FUNcluster = kmeans,   # K-Means
              method = "silhouette", # Avg. Silhouette
