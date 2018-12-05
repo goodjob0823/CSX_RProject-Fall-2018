@@ -9,8 +9,7 @@ In class
   
 At home
 
-Finished week_12_hw
+1. Finished week_12_hw
 
-    [week_12_hw.html](https://goodjob0823.github.io/CSX_RProject_Fall_2018/week_12/hw_12
-    /week_12_hw.html)
+    [week_12_hw.html](https://goodjob0823.github.io/CSX_RProject_Fall_2018/week_12/hw_12/week_12_hw.html)
     
