@@ -31,3 +31,5 @@ At home
     [R shiny_Textmining](https://goodjob0823.shinyapps.io/Textmining/)
     [備註：沒成功轉換到shinyapps.io，目前還沒找到問題，先放上原始檔案]
     [原始檔案](http://127.0.0.1:6486/)
+    
+    https://goodjob0823.github.io/CSX_RProject_Fall_2018/week_3/hw_3/task_3/hw_3.html
